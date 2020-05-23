@@ -7,7 +7,6 @@
 //================================================================================
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponBehaviour : MonoBehaviour{
@@ -17,13 +16,13 @@ public class WeaponBehaviour : MonoBehaviour{
     **************************************************/
 
     /// <summary>
-    /// 武器のスタッツ
+    /// 武器のステータス
     /// </summary>
     [SerializeField]
     private Weapon stats;
 
     /// <summary>
-    /// 発砲のディレイ中であるか
+    /// 射撃ディレイ中であるか
     /// </summary>
     private bool isDelayed{
         get;
@@ -136,8 +135,11 @@ public class WeaponBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// バースト射撃
+    /// バースト射撃(未実装)
     /// </summary>
+    /// <param name="roundCount">弾数</param>
+    /// <param name="shotDelay">ディレイの長さ</param>
+    /// <returns></returns>
     private IEnumerator BurstFire(int roundCount, float shotDelay){
         for(int round = 0; round < roundCount; round++){
             for(int count = 0; count < stats.projectileCount; count++){
@@ -158,8 +160,9 @@ public class WeaponBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 発砲のディレイ
+    /// 射撃ディレイ(発砲不可能な時間)の適用
     /// </summary>
+    /// <returns></returns>
     private IEnumerator Delay(){
         isDelayed = true;
         yield return new WaitForSeconds(stats.shotDelay);

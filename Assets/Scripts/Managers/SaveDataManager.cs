@@ -38,9 +38,9 @@ public class SaveDataManager : MonoBehaviour{
 		get{
 			if(saveData_value == null){
 				string path = Application.persistentDataPath + "/";
-				string fileName = "savedata.txt";
+                string fileName = "savedata.txt";
 
-				saveData_value = new SaveData(path, fileName);
+                saveData_value = new SaveData(path, fileName);
 			}
 
 			return saveData_value;
@@ -122,15 +122,18 @@ public class SaveDataManager : MonoBehaviour{
 	}
 
     /// <summary>
-    /// 指定データの削除
+    /// データの削除
     /// </summary>
+    /// <param name="key">削除するデータキー</param>
 	public static void Remove(string key){
 		saveData.Remove(key);
 	}
 
     /// <summary>
-    /// 指定したキーの存在判定
+    /// キーの存在判定
     /// </summary>
+    /// <param name="key">判定するデータキー</param>
+    /// <returns></returns>
 	public static bool ContainsKey(string key){
 		return saveData.ContainsKey(key);
 	}
@@ -138,27 +141,17 @@ public class SaveDataManager : MonoBehaviour{
     /// <summary>
     /// キー一覧の取得
     /// </summary>
+    /// <returns>セーブデータ内の全キーのリスト</returns>
 	public static List<string> GetKeys(){
 		return saveData.GetKeys();
 	}
 
     /// <summary>
-    /// セーブデータの保存
+    /// データの保存
     /// </summary>
 	public static void Save(){
 		saveData.Save();
 	}
-
-    /// <summary>
-    /// データ保存場所の取得
-    /// </summary>
-    private static string GetDataPath(){
-        #if !UNITY_EDITOR && UNITY_ANDROID
-            return Application.dataPath;
-        #else
-            return Application.persistentDataPath;
-        #endif
-    }
 
     /**************************************************
         Classes
@@ -318,28 +311,31 @@ public class SaveDataManager : MonoBehaviour{
 		}
 
 		public void Save(){
-			using(StreamWriter streamWriter = new StreamWriter(Path.Combine(path, fileName), false, Encoding.GetEncoding("utf-8"))){	
-				Serialization<string, string> serializedDictionary = new Serialization<string, string>(saveDataDictionary);
-				serializedDictionary.OnBeforeSerialize();
-                string encryptedData = Encryption.Encrypt(JsonUtility.ToJson(serializedDictionary));
+			Serialization<string, string> serializedDictionary = new Serialization<string, string>(saveDataDictionary);
+			serializedDictionary.OnBeforeSerialize();
+			string encryptedData = Encryption.Encrypt(JsonUtility.ToJson(serializedDictionary));
 
-				streamWriter.WriteLine(encryptedData);
-			}
-		}
+            using(StreamWriter streamWriter = new StreamWriter(Path.Combine(path, fileName), false, Encoding.UTF8)){
+                streamWriter.WriteLine(encryptedData);
+            }
+        }
 
 		public void Load(){
-			if(File.Exists(Path.Combine(path, fileName))){
-				using(StreamReader streamReader = new StreamReader(Path.Combine(path, fileName), Encoding.GetEncoding("utf-8"))){
-					if(saveDataDictionary != null){
-                        string decryptedData = Encryption.Decrypt(streamReader.ReadToEnd());
-						Serialization<string, string> serealizedDictionary = JsonUtility.FromJson<Serialization<string, string>>(decryptedData);
-						serealizedDictionary.OnAfterDeserialize();
+			string encryptedData = null;
+			string decryptedData = null;
 
-						saveDataDictionary = serealizedDictionary.ToDictionary();
-					}
+            if(File.Exists(Path.Combine(path, fileName)) && saveDataDictionary != null){
+				using(StreamReader streamReader = new StreamReader(Path.Combine(path, fileName), Encoding.UTF8)){
+					encryptedData = streamReader.ReadToEnd();
 				}
-			}
-			else{
+
+                decryptedData = Encryption.Decrypt(encryptedData);
+                Serialization<string, string> serealizedDictionary = JsonUtility.FromJson<Serialization<string, string>>(decryptedData);
+                serealizedDictionary.OnAfterDeserialize();
+
+                saveDataDictionary = serealizedDictionary.ToDictionary();
+            }
+            else{
                 saveDataDictionary = new Dictionary<string, string>();
             }
 		}

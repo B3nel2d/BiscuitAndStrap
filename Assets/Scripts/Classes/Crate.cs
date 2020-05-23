@@ -7,8 +7,6 @@
 //================================================================================
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Crate{
@@ -54,7 +52,7 @@ public class Crate{
     }
 
     /// <summary>
-    /// 散弾武器になる確率
+    /// 散弾銃の出る確率
     /// </summary>
     private float multipleProjectileChance{
         get{
@@ -67,20 +65,22 @@ public class Crate{
     **************************************************/
 
     /// <summary>
-    /// コンストラクター
+    /// コンストラクタ
     /// </summary>
+    /// <param name="rank">ランク</param>
+    /// <param name="grade">グレード</param>
     public Crate(Rank rank, Weapon.Grade grade){
         this.rank = rank;
         this.grade = grade;
     }
 
     /// <summary>
-    /// ランダムな武器スタッツの設定
+    /// 武器ステータスの設定
     /// </summary>
     private void SetWeaponStats(){
         weapon = new Weapon();
 
-        int id = -1;
+        int id = -2;
         do{
             id = UnityEngine.Random.Range(0, 100);
         }
@@ -207,8 +207,13 @@ public class Crate{
     }
 
     /// <summary>
-    /// スタッツの設定
+    /// ステータスの値の決定
     /// </summary>
+    /// <param name="stat">決定するステータス</param>
+    /// <param name="minimumValue">最小値</param>
+    /// <param name="maximumValue">最大値</param>
+    /// <param name="score">スコア</param>
+    /// <param name="invertScore">スコアを反転するか</param>
     private void SetStat(ref int stat, int minimumValue, int maximumValue, ref float score, bool invertScore = false){
         float randomNumber = UnityEngine.Random.value;
         stat = (int)Math.Round(minimumValue + (maximumValue - minimumValue) * Mathf.Pow(randomNumber, 3.0f));
@@ -221,8 +226,13 @@ public class Crate{
         }
     }
     /// <summary>
-    /// スタッツの設定
+    /// ステータスの値の決定
     /// </summary>
+    /// <param name="stat">決定するステータス</param>
+    /// <param name="minimumValue">最小値</param>
+    /// <param name="maximumValue">最大値</param>
+    /// <param name="score">スコア</param>
+    /// <param name="invertScore">スコアを反転するか</param>
     private void SetStat(ref float stat, float minimumValue, float maximumValue, ref float score, bool invertScore = false){
         float randomNumber = UnityEngine.Random.value;
         stat = minimumValue + (maximumValue - minimumValue) * Mathf.Pow(randomNumber, 3.0f);
@@ -236,8 +246,9 @@ public class Crate{
     }
 
     /// <summary>
-    /// 武器の取得
+    /// 中身の取得
     /// </summary>
+    /// <returns>中身の銃</returns>
     public Weapon Open() {
         SetWeaponStats();
 

@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemBehaviour : MonoBehaviour{
@@ -16,27 +14,21 @@ public class ItemBehaviour : MonoBehaviour{
         Fields / Properties
     **************************************************/
     
+    /// <summary>
+    /// アイテム
+    /// </summary>
     public Item item{
         get;
         set;
     }
 
     /**************************************************
-        Unity Event Functions
-    **************************************************/
-
-    private void Awake(){
-        Initialize();
-    }
-
-    /**************************************************
         User Defined Functions
     **************************************************/
 
-    private void Initialize(){
-
-    }
-
+    /// <summary>
+    /// 選択
+    /// </summary>
     public void Select(){
         InventoryManager.instance.selectedItem = item;
         InventoryManager.instance.ShowWeaponStats();

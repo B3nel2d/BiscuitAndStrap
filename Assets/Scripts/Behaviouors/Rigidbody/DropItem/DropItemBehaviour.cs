@@ -6,10 +6,7 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Coffee.UIExtensions;
 
 public class DropItemBehaviour : RigidbodyBehaviour{
 
@@ -17,12 +14,18 @@ public class DropItemBehaviour : RigidbodyBehaviour{
         Fields / Properties
     **************************************************/
 
+    /// <summary>
+    /// 名前
+    /// </summary>
     [field: SerializeField, RenameField("Name")]
-    protected string name{
+    protected new string name{
         get;
         set;
     }
 
+    /// <summary>
+    /// 移動速度
+    /// </summary>
     protected override Vector2 movementVelocity{
         get{
             if(!isLanding){
@@ -34,28 +37,43 @@ public class DropItemBehaviour : RigidbodyBehaviour{
         }
     }
 
+    /// <summary>
+    /// ポップ速度
+    /// </summary>
     private Vector2 popVelocity{
         get;
         set;
     }
 
+    /// <summary>
+    /// ポップの速さ
+    /// </summary>
     [field: SerializeField, RenameField("Pop Speed")]
     protected float popSpeed{
         get;
         set;
     }
 
+    /// <summary>
+    /// 跳ねた回数
+    /// </summary>
     private int boundCount{
         get;
         set;
     }
 
+    /// <summary>
+    /// 跳ねる最大回数
+    /// </summary>
     [field: SerializeField, RenameField("Max Bound Count")]
     private int maxBoundCount{
         get;
         set;
     }
 
+    /// <summary>
+    /// 取得した際の効果音
+    /// </summary>
     [field: SerializeField, RenameField("Get Sound")]
     protected AudioClip getSound{
         get;
@@ -76,7 +94,6 @@ public class DropItemBehaviour : RigidbodyBehaviour{
         if(EmbeddingWall == null){
             if(collision.gameObject.tag == "Platform"){
                 if(boundCount < maxBoundCount){
-                    //床で跳ねる
                     standingPlatformCount = 0;
                     boundCount++;
                     fallSpeed = 0;
@@ -103,6 +120,10 @@ public class DropItemBehaviour : RigidbodyBehaviour{
         User Defined Functions
     **************************************************/
 
+    /// <summary>
+    /// ポップ
+    /// </summary>
+    /// <param name="direction">ポップする方向</param>
     public void Pop(Vector3 direction){
         if(1.0f < direction.x){
             direction = new Vector3(direction.x - 360.0f, direction.y, direction.z);
@@ -114,13 +135,19 @@ public class DropItemBehaviour : RigidbodyBehaviour{
         popVelocity = direction * popSpeed;
     }
 
-    private void BouncingOffWall() {
+    /// <summary>
+    /// 壁に当たって跳ね返る処理
+    /// </summary>
+    private void BouncingOffWall(){
         if(EmbeddingWall != null){
-            //跳ねる
             popVelocity = new Vector2(-popVelocity.x, popVelocity.y);
         }
     }
 
+    /// <summary>
+    /// 効果の付与
+    /// </summary>
+    /// <param name="target">付与対象</param>
     virtual protected void GiveEffect(PlayerBehaviour target){
         GameManager.instance.PlayAudio(getSound);
     }

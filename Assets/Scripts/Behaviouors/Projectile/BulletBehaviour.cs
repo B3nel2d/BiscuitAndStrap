@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletBehaviour : ProjectileBehaviour{
@@ -15,6 +13,8 @@ public class BulletBehaviour : ProjectileBehaviour{
     /// <summary>
     /// 発射
     /// </summary>
+    /// <param name="direction">向き</param>
+    /// <param name="speed">弾速</param>
     public override void Shoot(Vector3 direction, float speed){
         base.Shoot(direction, speed);
 

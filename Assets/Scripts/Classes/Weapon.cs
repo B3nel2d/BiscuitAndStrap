@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -37,7 +35,7 @@ public class Weapon : Item{
     }
 
     /// <summary>
-    /// 射撃方式
+    /// 武器の射撃方式
     /// </summary>
     public enum FireMode{
         SemiAutomatic,
@@ -57,7 +55,7 @@ public class Weapon : Item{
     }
 
     /// <summary>
-    /// 武器のランク(レア度)
+    /// 武器のランク
     /// </summary>
     public enum Rank{
         Bronze,
@@ -72,7 +70,7 @@ public class Weapon : Item{
     **************************************************/
 
     /// <summary>
-    /// 武器のユニークなID
+    /// ユニークな識別子
     /// </summary>
     [field: SerializeField, RenameField("ID")]
     public int id;
@@ -120,25 +118,25 @@ public class Weapon : Item{
     public int burstRoundCount;
 
     /// <summary>
-    /// バースト射撃の間隔
+    /// バースト射撃の発射間隔
     /// </summary>
     [field: SerializeField, RenameField("Burst Shot Delay")]
     public float burstShotDelay;
 
     /// <summary>
-    /// 散弾の射出物の数
+    /// 射出物の発射数
     /// </summary>
     [field: SerializeField, RenameField("Projectile Count")]
     public int projectileCount;
 
     /// <summary>
-    /// 散弾の拡散範囲
+    /// 射出物の最大拡散角度
     /// </summary>
     [field: SerializeField, RenameField("Spread Range")]
     public float spreadRange;
 
     /// <summary>
-    /// 爆発の範囲
+    /// 爆発範囲の半径
     /// </summary>
     [field: SerializeField, RenameField("Explosion Range")]
     public float explosionRange;
@@ -150,13 +148,13 @@ public class Weapon : Item{
     public int projectileDamage;
 
     /// <summary>
-    /// 射出物の飛翔速度
+    /// 射出物の飛行速度
     /// </summary>
     [field: SerializeField, RenameField("Projectile Speed")]
     public float projectileSpeed;
 
     /// <summary>
-    /// 射撃の間隔
+    /// 射撃のディレイの長さ
     /// </summary>
     [field: SerializeField, RenameField("Shot Delay")]
     public float shotDelay;
@@ -172,7 +170,7 @@ public class Weapon : Item{
     **************************************************/
 
     /// <summary>
-    /// コンストラクター
+    /// コンストラクタ
     /// </summary>
     public Weapon(){
         id = -1;

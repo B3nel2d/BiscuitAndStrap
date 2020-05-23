@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour{
@@ -56,6 +54,8 @@ public class ProjectileBehaviour : MonoBehaviour{
     /// <summary>
     /// 初期化処理
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
+    /// <param name="criticalChance">クリティカル発生確率</param>
     virtual public void Initialize(int damage, float criticalChance){
         this.damage = damage;
         this.criticalChance = criticalChance;
@@ -65,6 +65,8 @@ public class ProjectileBehaviour : MonoBehaviour{
     /// <summary>
     /// 発射
     /// </summary>
+    /// <param name="direction">向き</param>
+    /// <param name="speed">弾速</param>
     virtual public void Shoot(Vector3 direction, float speed){
         Destroy(transform.gameObject, lifeTime);
     }
@@ -72,6 +74,7 @@ public class ProjectileBehaviour : MonoBehaviour{
     /// <summary>
     /// ダメージの付与
     /// </summary>
+    /// <param name="target">対象</param>
     private void DealDamage(CharacterBehavior target){
         float randomNumber = UnityEngine.Random.value;
 
@@ -94,8 +97,9 @@ public class ProjectileBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 物体に接触した際の処理
+    /// 物体に衝突した際の処理
     /// </summary>
+    /// <param name="collider">コライダー</param>
     public void OnTriggerEnter2D(Collider2D collider){
         switch(collider.gameObject.tag){
             case "Platform":
@@ -111,8 +115,9 @@ public class ProjectileBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 画面外に出た際の処理
+    /// 画面(ゲームエリア)を離れた際の処理
     /// </summary>
+    /// <param name="collision">コリジョン</param>
     public void OnTriggerExit2D(Collider2D collision) {
         if(collision.gameObject.tag == "Game Area"){
             Destroy(transform.gameObject);

@@ -97,6 +97,8 @@ public class InputManager : MonoBehaviour{
     /// <summary>
     /// ボタンのイベントトリガー設定
     /// </summary>
+    /// <param name="button">設定対象のボタン</param>
+    /// <param name="eventTrigger">設定するイベントトリガー</param>
     private void SetButtonEventTriggers(ButtonName button, EventTrigger eventTrigger){
         EventTrigger.Entry buttonDownEntry = new EventTrigger.Entry();
         buttonDownEntry.eventID = EventTriggerType.PointerDown;
@@ -145,8 +147,10 @@ public class InputManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ボタン入力の取得
+    /// ボタン入力の取得(PC環境)
     /// </summary>
+    /// <param name="button">対象のボタン</param>
+    /// <param name="keyCode">対象キーのキーコード</param>
     private void GetButtonInput(ButtonName button, KeyCode keyCode){
         if(Input.GetKeyDown(keyCode)){
             buttons[button] = ButtonState.Press;
@@ -163,8 +167,10 @@ public class InputManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ボタン入力の取得
+    /// ボタン入力の取得(モバイル環境)
     /// </summary>
+    /// <param name="button">対象のボタン</param>
+    /// <param name="eventType">対象のイベントタイプ</param>
     private void GetButtonInput(ButtonName button, EventTriggerType eventType){
         switch(eventType){
             case EventTriggerType.PointerDown:

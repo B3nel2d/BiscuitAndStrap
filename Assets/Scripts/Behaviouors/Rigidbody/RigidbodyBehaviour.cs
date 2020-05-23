@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RigidbodyBehaviour : MonoBehaviour{
@@ -70,6 +68,9 @@ public class RigidbodyBehaviour : MonoBehaviour{
         set;
     }
 
+    /// <summary>
+    /// 乗っている足場の数のバッキングフィールド
+    /// </summary>
     private int standingPlatformCount_value;
     /// <summary>
     /// 乗っている足場の数
@@ -147,6 +148,36 @@ public class RigidbodyBehaviour : MonoBehaviour{
         Move();
     }
 
+    virtual public void OnTriggerEnter2D(Collider2D collision){
+        if(collision.gameObject.tag == "Platform"){
+            float footPosition = transform.position.y - transform.GetComponent<BoxCollider2D>().bounds.size.y / 2;
+            float groundPositon = collision.transform.position.y + collision.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2;
+            isEmbedding = false;
+
+            if(footPosition - groundPositon < 0 && embeddingTolerance < Mathf.Abs(footPosition - groundPositon)){
+                isEmbedding = true;
+                EmbeddingWall = collision.gameObject;
+            }
+            else{
+                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
+                transform.position = new Vector2(transform.position.x, collision.transform.position.y + transform.GetComponent<BoxCollider2D>().bounds.size.y / 2 + collision.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2);
+
+                standingPlatformCount++;
+            }
+        }
+    }
+
+    virtual public void OnTriggerExit2D(Collider2D collision){
+        if(collision.gameObject.tag == "Platform"){
+            if(collision.gameObject == EmbeddingWall){
+                EmbeddingWall = null;
+            }
+            else{
+                standingPlatformCount--;
+            }
+        }
+    }
+
     /**************************************************
         User Defined Functions
     **************************************************/
@@ -159,11 +190,10 @@ public class RigidbodyBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 移動処理
+    /// 移動
     /// </summary>
     virtual protected void Move(){
         GetComponent<Rigidbody2D>().velocity = movementVelocity;
-        //GetComponent<Rigidbody2D>().MovePosition((Vector2)transform.position + movementVelocity * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -181,43 +211,4 @@ public class RigidbodyBehaviour : MonoBehaviour{
         }
     }
 
-    /// <summary>
-    /// 物体との衝突時の処理
-    /// </summary>
-    virtual public void OnTriggerEnter2D(Collider2D collision){
-        if(collision.gameObject.tag == "Platform"){
-            //足のY座標
-            float footPosition = transform.position.y - transform.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-            //地面の表面のY座標
-            float groundPositon = collision.transform.position.y + collision.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-            isEmbedding = false;
-
-            if(footPosition - groundPositon < 0 && embeddingTolerance < Mathf.Abs(footPosition - groundPositon)){
-                //壁判定
-                isEmbedding = true;
-                EmbeddingWall = collision.gameObject;
-            }
-            else{
-                //着地
-                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
-                transform.position = new Vector2(transform.position.x, collision.transform.position.y + transform.GetComponent<BoxCollider2D>().bounds.size.y / 2 + collision.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2);
-
-                standingPlatformCount++;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 画面外に出た際の処理
-    /// </summary>
-    virtual public void OnTriggerExit2D(Collider2D collision){
-        if(collision.gameObject.tag == "Platform"){
-            if(collision.gameObject == EmbeddingWall){
-                EmbeddingWall = null;
-            }
-            else{
-                standingPlatformCount--;
-            }
-        }
-    }
 }

@@ -7,7 +7,6 @@
 //================================================================================
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehaviour : CharacterBehavior{
@@ -43,7 +42,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// ロール中であるか
+    /// ローリング中であるか
     /// </summary>
     private bool isRolling{
         get;
@@ -84,7 +83,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// ジャンプの長さ
+    /// ジャンプの最大時間
     /// </summary>
     [field: SerializeField, RenameField("Jump Time Length")]
     protected float jumpTimeLength{
@@ -101,7 +100,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// ロールの速度
+    /// ローリングの速度
     /// </summary>
     [field: SerializeField, RenameField("Roll Speed")]
     private float rollSpeed{
@@ -110,7 +109,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// ロールのクールダウン時間
+    /// ローリングのクールダウン
     /// </summary>
     [field: SerializeField, RenameField("Roll Cooldown")]
     private float rollCooldown{
@@ -119,7 +118,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 視点回転の速度
+    /// 照準の回転速度
     /// </summary>
     [field: SerializeField, RenameField("Weapon Rotation Speed")]
     private float weaponRotationSpeed{
@@ -194,7 +193,7 @@ public class PlayerBehaviour : CharacterBehavior{
     //==============================
 
     /// <summary>
-    /// 頭
+    /// プレイヤーキャラクターの頭
     /// </summary>
     [field: Header("References")]
     [field: SerializeField, RenameField("Head")]
@@ -204,7 +203,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 左腕
+    /// プレイヤーキャラクターの左腕
     /// </summary>
     [field: SerializeField, RenameField("LeftArm")]
     private GameObject leftArm{
@@ -213,7 +212,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 右腕
+    /// プレイヤーキャラクターの右腕
     /// </summary>
     [field: SerializeField, RenameField("RightArm")]
     private GameObject rightArm{
@@ -222,7 +221,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// アニメーター
+    /// プレイヤーキャラクターのアニメーター
     /// </summary>
     [field: SerializeField, RenameField("Animation")]
     private Animator animator{
@@ -339,7 +338,7 @@ public class PlayerBehaviour : CharacterBehavior{
             jumpStartInput = false;
         }
 
-        //ボタンが離されるか一定時間過ぎたら急に減速
+        //ボタンが離されるか一定時間過ぎたら減速開始
         if(jumpButton == InputManager.ButtonState.Down && isJumping && 0.0f < jumpTimer){
             fallSpeed = -jumpStrength * (0.1f + 0.9f * (jumpTimer / jumpTimeLength));
         }
@@ -351,12 +350,21 @@ public class PlayerBehaviour : CharacterBehavior{
         }
     }
 
+    /// <summary>
+    /// ローリング
+    /// </summary>
     private void Roll(){
         if(Input.GetKeyDown(KeyCode.LeftShift) && isLanding && !isRolling){
             StartCoroutine(Roll(rollSpeed, 0.3f));
         }
     }
 
+    /// <summary>
+    /// ローリング
+    /// </summary>
+    /// <param name="speed"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private IEnumerator Roll(float speed, float time){
         isRolling = true;
         GameManager.instance.additionalGameSpeed += speed;
@@ -391,11 +399,11 @@ public class PlayerBehaviour : CharacterBehavior{
             case GameManager.TargetPlatform.PC:
                 switch(GameManager.instance.rotationStyle){
                     case GameManager.RotationStyle.RotatePlayer:
-                        if(Input.GetKey(KeyCode.RightArrow)){
+                        if(Input.GetKey(KeyCode.DownArrow)){
                             rightArm.transform.Rotate(Vector3.back * weaponRotationSpeed);
                             head.transform.Rotate(Vector3.back * (weaponRotationSpeed * 40.0f / 100.0f));
                         }
-                        if(Input.GetKey(KeyCode.LeftArrow)){
+                        if(Input.GetKey(KeyCode.UpArrow)){
                             rightArm.transform.Rotate(Vector3.forward * weaponRotationSpeed);
                             head.transform.Rotate(Vector3.forward * (weaponRotationSpeed * 40.0f / 100.0f));
                         }
@@ -452,8 +460,10 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 角度の補正
+    /// 角度の補正(0から360の間に収める)
     /// </summary>
+    /// <param name="angle">補正する角度</param>
+    /// <returns>補正された角度</returns>
     private float CorrectAngle(float angle){
         while(angle < 0.0f){
             angle += 360.0f; 
@@ -468,6 +478,8 @@ public class PlayerBehaviour : CharacterBehavior{
     /// <summary>
     /// 被ダメージ処理
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
+    /// <param name="direction">ダメージを受けた方向</param>
     public override void TakeDamage(int damage, Vector3 direction){
         if(isInvincible){
             return;
@@ -481,9 +493,20 @@ public class PlayerBehaviour : CharacterBehavior{
         UIManager.instance.UpdateHealthText(currentHealth);
     }
 
+    /// <summary>
+    /// 爆発パーティクルの発生
+    /// </summary>
     private void EmitExplosionParticle(){
         GameObject particle = Instantiate(explosionParticle, transform.position, Quaternion.identity, transform.parent);
         Destroy(particle, 1.0f);
+    }
+
+    /// <summary>
+    /// コインの取得
+    /// </summary>
+    /// <param name="type"></param>
+    public void GetCoin(CoinBehaviour.Type type){
+        GameManager.instance.GetCoin(type);
     }
 
     /// <summary>
@@ -496,15 +519,10 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// コインの取得
+    /// 無敵化
     /// </summary>
-    public void GetCoin(CoinBehaviour.Type type){
-        GameManager.instance.GetCoin(type);
-    }
-
-    /// <summary>
-    /// 指定時間分の無敵化
-    /// </summary>
+    /// <param name="time">無敵時間</param>
+    /// <returns></returns>
     private IEnumerator BecomeInvincible(float time){
         isInvincible = true;
 
@@ -547,7 +565,7 @@ public class PlayerBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// アニメーション速度の変更
+    /// ゲームスピードに従ったアニメーション速度の調節
     /// </summary>
     private void ChangeAnimationSpeed(){
         animator.SetFloat("Speed", GameManager.instance.baseGameSpeed / GameManager.instance.maximumGameSpeed);

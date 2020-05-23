@@ -6,11 +6,8 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class EnemyBehaviour : CharacterBehavior{
 
@@ -31,10 +28,10 @@ public class EnemyBehaviour : CharacterBehavior{
     **************************************************/
 
     /// <summary>
-    /// キャラクター名
+    /// 名前
     /// </summary>
     [field: SerializeField, RenameField("Name")]
-    protected string name{
+    protected new string name{
         get;
         set;
     }
@@ -57,7 +54,7 @@ public class EnemyBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// コインドロップのフラグ
+    /// コインドロップ用のフラグ
     /// </summary>
     bool[] coinDropFlags{
         get;
@@ -83,7 +80,7 @@ public class EnemyBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 撃破時の効果音
+    /// 撃破された際の効果音
     /// </summary>
     [field: SerializeField, RenameField("Destroy Sound")]
     protected AudioClip destroySound{
@@ -123,7 +120,7 @@ public class EnemyBehaviour : CharacterBehavior{
     **************************************************/
 
     /// <summary>
-    /// 落下処理
+    /// 落下速度の計算
     /// </summary>
     protected override void Fall(){
         if(type == Type.Standing){
@@ -134,6 +131,8 @@ public class EnemyBehaviour : CharacterBehavior{
     /// <summary>
     /// 被ダメージ処理
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
+    /// <param name="direction">ダメージを受けた方向</param>
     public override void TakeDamage(int damage, Vector3 direction){
         base.TakeDamage(damage, direction);
 
@@ -157,6 +156,7 @@ public class EnemyBehaviour : CharacterBehavior{
     /// <summary>
     /// コインのドロップ
     /// </summary>
+    /// <param name="direction">ドロップする向き</param>
     private void DropCoin(Vector3 direction){
         GameObject coin = Instantiate(GameManager.instance.coinPrefab, transform.position, Quaternion.identity);
 
@@ -167,7 +167,7 @@ public class EnemyBehaviour : CharacterBehavior{
     }
 
     /// <summary>
-    /// 撃破処理
+    /// 撃破された際の処理
     /// </summary>
     override protected void Down(){
         DropRandomItem();
@@ -193,13 +193,14 @@ public class EnemyBehaviour : CharacterBehavior{
     /// <summary>
     /// アイテムのドロップ
     /// </summary>
+    /// <param name="itemPrefab">ドロップするアイテム</param>
     private void DropItem(GameObject itemPrefab){
         GameObject item = Instantiate(itemPrefab, transform.position, Quaternion.identity);
         item.GetComponent<DropItemBehaviour>().Pop(Vector3.up);
     }
 
     /// <summary>
-    /// パーティクルの発生
+    /// 爆発パーティクルの発生
     /// </summary>
     private void EmitExplosionParticle(){
         GameObject particle = Instantiate(explosionParticle, transform.position, Quaternion.identity, transform.parent);

@@ -6,10 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 [System.Serializable]
 public class Score{
 
@@ -18,19 +14,22 @@ public class Score{
     **************************************************/
 
     /// <summary>
-    /// 総移動距離
+    /// 移動距離
     /// </summary>
     public float traveledDistance;
+
     /// <summary>
-    /// 総獲得金額
+    /// 獲得金額
     /// </summary>
     public int earnedCurrency;
+
     /// <summary>
-    /// 総与ダメージ
+    /// 与ダメージ
     /// </summary>
     public int dealtDamage;
+
     /// <summary>
-    /// 敵の総撃破数
+    /// 敵撃破数
     /// </summary>
     public int defeatedEnemyCount;
 
@@ -39,7 +38,7 @@ public class Score{
     **************************************************/
 
     /// <summary>
-    /// コンストラクター
+    /// コンストラクタ
     /// </summary>
     public Score(){
         traveledDistance = 0.0f;
@@ -48,8 +47,12 @@ public class Score{
         defeatedEnemyCount = 0;
     }
     /// <summary>
-    /// コンストラクター
+    /// コンストラクタ
     /// </summary>
+    /// <param name="traveledDistance">移動距離</param>
+    /// <param name="earnedCurrency">獲得金額</param>
+    /// <param name="dealtDamage">与ダメージ</param>
+    /// <param name="defeatedEnemyCount">敵撃破数</param>
     public Score(float traveledDistance, int earnedCurrency, int dealtDamage, int defeatedEnemyCount){
         this.traveledDistance = traveledDistance;
         this.earnedCurrency = earnedCurrency;

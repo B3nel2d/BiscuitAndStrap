@@ -1,8 +1,8 @@
 ﻿//================================================================================
 //
-//  StreetLampBehaviour
+//  PlatformBehaviour
 //
-//  街灯の挙動や設定
+//  足場の挙動や設定
 //
 //================================================================================
 
@@ -32,19 +32,19 @@ public class StreetLampBehaviour : MonoBehaviour{
     **************************************************/
 
     /// <summary>
-    /// ゲームスピードに沿った移動
+    /// ゲームスピードに従った移動
     /// </summary>
     private void Move(){
         transform.position = (Vector2)transform.position + gameVelocity * Time.fixedDeltaTime;
     }
 
     /// <summary>
-    /// 画面外に出た際の処理
+    /// 画面(ゲームエリア)外に出た際の処理
     /// </summary>
-    public void OnTriggerExit2D(Collider2D collision){
+    /// <param name="collision">離れたコリジョン</param>
+    public void OnTriggerExit2D(Collider2D collision) {
         if(collision.gameObject.tag == "Environment Area"){
             Destroy(transform.gameObject);
         }
     }
-
 }

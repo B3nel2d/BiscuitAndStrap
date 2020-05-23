@@ -67,7 +67,7 @@ public class TitleManager : MonoBehaviour{
     /**************************************************
         Unity Event Functions
     **************************************************/
-
+    
     private void Start(){
         Initialize();
     }
@@ -89,7 +89,7 @@ public class TitleManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// メニュー画面への遷移
+    /// メニューへの遷移
     /// </summary>
     public async void Enter(){
         overlay.SetActive(true);
@@ -103,6 +103,7 @@ public class TitleManager : MonoBehaviour{
     /// <summary>
     /// 音声の再生
     /// </summary>
+    /// <param name="audioClip">再生するクリップ</param>
     public void PlayAudio(AudioClip audioClip){
         audioSources[1].PlayOneShot(audioClip);
     }

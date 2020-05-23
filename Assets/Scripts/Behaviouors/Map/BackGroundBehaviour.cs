@@ -32,20 +32,19 @@ public class BackGroundBehaviour : MonoBehaviour{
     **************************************************/
 
     /// <summary>
-    /// ゲームスピードに沿った移動
+    /// ゲームスピードに従った移動
     /// </summary>
     private void Move(){
         transform.position = (Vector2)transform.position + gameVelocity * GameManager.instance.backgroundSpeedMultiplier * Time.fixedDeltaTime;
     }
 
     /// <summary>
-    /// 画面外に出た際の処理
+    /// 画面(ゲームエリア)外に出た際の処理
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision">離れたコリジョン</param>
     public void OnTriggerExit2D(Collider2D collision){
         if(collision.gameObject.tag == "Game Area"){
             Destroy(transform.gameObject);
         }
     }
-
 }

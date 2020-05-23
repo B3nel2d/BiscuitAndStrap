@@ -2,7 +2,7 @@
 //
 //  GameManager
 //
-//  ゲームの管理を行う
+//  ゲーム(GameScene)の管理を行う
 //
 //================================================================================
 
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ゲームオーバー状態か
+    /// ゲームオーバー状態であるか
     /// </summary>
     public bool isGameOver{
         get;
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 現在のゲームスピード
+    /// 実際のゲームスピード(走る速度)
     /// </summary>
     public float currentGameSpeed{
         get{
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 最大ゲームスピード
+    /// 最大のゲームスピード
     /// </summary>
     [field: SerializeField, RenameField("Maximum Game Speed")]
     public float maximumGameSpeed{
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour{
     }
     
     /// <summary>
-    /// 最小ゲームスピード
+    /// 最小のゲームスピード
     /// </summary>
     [field: SerializeField, RenameField("Minimum Game Speed")]
     public float minimumGameSpeed{
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 足場の最小サイズ
+    /// 足場の最大サイズ
     /// </summary>
     [field: Space(20)]
     [field: SerializeField, RenameField("Maximum Platform Size")]
@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 足場の最大サイズ
+    /// 足場の最小サイズ
     /// </summary>
     [field: Space(20)]
     [field: SerializeField, RenameField("Minimum Platform Size")]
@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour{
     }
     
     /// <summary>
-    /// 足場の高さの最大変動値
+    /// 足場の高さの最大値
     /// </summary>
     private float maximumPlatformHeightChange{
         get{
@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour{
     }
     
     /// <summary>
-    /// 足場の高さの最小変動値
+    /// 足場の高さの最小値
     /// </summary>
     private float minimumPlatformHeightChange{
         get{
@@ -263,7 +263,7 @@ public class GameManager : MonoBehaviour{
     }
     
     /// <summary>
-    /// 足場間の間隔の変動具合
+    /// ゲームスピードによる足場の間隔の変動具合
     /// </summary>
     private float platformSpacingRate{
         get{
@@ -338,7 +338,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 幅の最小単位
+    /// 足場の幅の最小単位
     /// </summary>
     [field: Space(20)]
     [field: SerializeField, RenameField("Width Unit")]
@@ -348,7 +348,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 高さの最小単位
+    /// 足場の高さの最小単位
     /// </summary>
     [field: SerializeField, RenameField("height Unit")]
     private float heightUnit{
@@ -423,7 +423,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 背景の建物の流れる速さの倍率
+    /// 背景の建物の流れる速度の倍率
     /// </summary>
     [field: Space(20)]
     [field: SerializeField, RenameField("Background Speed Multiplier")]
@@ -446,7 +446,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 敵を生成する基本位置
+    /// 敵の基本生成位置
     /// </summary>
     [field: SerializeField, RenameField("Enemy Spawn Position")]
     private Vector2 enemySpawnPosition{
@@ -524,7 +524,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ゲームの段階毎のコインの価値
+    /// ゲームの進行度毎のコインの価値
     /// </summary>
     private int coinValue_field;
     private int coinValue{
@@ -572,7 +572,7 @@ public class GameManager : MonoBehaviour{
     }
     
     /// <summary>
-    /// ドロップする確率
+    /// アイテムのドロップ確率
     /// </summary>
     [field: SerializeField, RenameField("Item Drop Chance")]
     public float itemDropChance{
@@ -584,7 +584,7 @@ public class GameManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 獲得した経験値
+    /// 獲得した経験値量
     /// </summary>
     public int earnedExperiencePoint{
         get;
@@ -592,7 +592,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// コインによる経験値
+    /// コイン取得による経験値量
     /// </summary>
     [field: Header("Experience Point")]
     [field: SerializeField, RenameField("Experience Point Per Coin")]
@@ -602,7 +602,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 敵撃破による経験値
+    /// 敵撃破による経験値量
     /// </summary>
     [field: SerializeField, RenameField("Experience Point Per Enemy")]
     public int experiencePointPerEnemy{
@@ -614,7 +614,7 @@ public class GameManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 進んだ総距離
+    /// 移動距離
     /// </summary>
     private float traveledDistance{
         get;
@@ -622,12 +622,12 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 進んだ総距離のカウント最大値
+    /// 移動距離のカウント最大値
     /// </summary>
     private const float maximumTraveledDistanceLimit = 999999.99f;
 
     /// <summary>
-    /// 獲得した総金額
+    /// 獲得金額
     /// </summary>
     private int earnedCurrency{
         get;
@@ -635,12 +635,12 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 獲得した総金額のカウント最大値
+    /// 獲得金額のカウント最大値
     /// </summary>
     private const int maximumEarnedCurrencyLimit = 99999999;
 
     /// <summary>
-    /// 与えた総ダメージ
+    /// 与えたダメージ
     /// </summary>
     private int dealtDamage{
         get;
@@ -648,12 +648,12 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 与えた総ダメージのカウント最大値
+    /// 与えたダメージのカウント最大値
     /// </summary>
     private const int maximumDealtDamageLimit = 99999;
 
     /// <summary>
-    /// 撃破した敵の総数
+    /// 敵撃破数
     /// </summary>
     private int defeatedEnemyCount{
         get;
@@ -661,7 +661,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 撃破した敵の総数のカウント最大値
+    /// 敵撃破数のカウント最大値
     /// </summary>
     private const int maximumDefeatedEnemyLimit = 999;
 
@@ -674,6 +674,15 @@ public class GameManager : MonoBehaviour{
     [field: Header("Audio")]
     [field: SerializeField, RenameField("Audio Sources")]
     public List<AudioSource> audioSources{
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// BGM
+    /// </summary>
+    [field:SerializeField,RenameField("BGM")]
+    private List<AudioClip> bgm{
         get;
         set;
     }
@@ -706,7 +715,7 @@ public class GameManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 発射物のプレハブ
+    /// 射出物のプレハブ
     /// </summary>
     public Dictionary<Weapon.Projectile, GameObject> projectilePrefabs{
         get;
@@ -797,6 +806,14 @@ public class GameManager : MonoBehaviour{
         StartCoroutine(SpawnStreetLampContinuously());
         StartCoroutine(CreateBuildingContinuously());
 
+        if(0.333f < Random.value){
+            GetComponents<AudioSource>()[0].clip = bgm[0];
+        }
+        else{
+            GetComponents<AudioSource>()[0].clip = bgm[1];
+        }
+        GetComponents<AudioSource>()[0].Play();
+
         StartGame();
     }
 
@@ -828,8 +845,8 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 足場の生成
     /// </summary>
-    /// <param name="width">幅</param>
-    /// <param name="height">高さ</param>
+    /// <param name="width">足場の幅</param>
+    /// <param name="height">足場の高さ</param>
     private void CreatePlatform(float width, float height){
         GameObject platform = Instantiate(platformPrefab);
 
@@ -843,8 +860,8 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 足場の生成
     /// </summary>
-    /// <param name="width">幅</param>
-    /// <param name="height">高さ</param>
+    /// <param name="width">足場の幅</param>
+    /// <param name="height">足場の高さ</param>
     /// <param name="position">生成位置</param>
     private void CreatePlatform(float width, float height, Vector2 position){
         GameObject platform = Instantiate(platformPrefab, new Vector3(position.x + width / 2, position.y + height / 2, 0.0f), Quaternion.identity);
@@ -855,13 +872,12 @@ public class GameManager : MonoBehaviour{
 
         lastPlatform = platform;
     }
-
     /// <summary>
     /// 足場の生成
     /// </summary>
-    /// <param name="width">幅</param>
-    /// <param name="height">高さ</param>
-    /// <param name="distanceFromLastPlatform">最後に生成したplatformからの距離</param>
+    /// <param name="width">足場の幅</param>
+    /// <param name="height">足場の高さ</param>
+    /// <param name="distanceFromLastPlatform">最後に生成した足場からの距離</param>
     private void CreatePlatform(float width, float height, float distanceFromLastPlatform){
         if(lastPlatform == null){
             CreatePlatform(width, height);
@@ -906,7 +922,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 背景の建物の生成
     /// </summary>
-    /// <param name="position">位置</param>
+    /// <param name="position">生成位置</param>
     private void CreateBuilding(Vector2 position){
         GameObject prefab = buildingPrefabs[0];
         if(UnityEngine.Random.value <= 0.2f){
@@ -919,7 +935,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 背景の建物の生成
     /// </summary>
-    /// <param name="distanceFromLastBackground">最後に生成した背景との距離</param>
+    /// <param name="distanceFromLastBackground">最後に生成した建物との距離</param>
     private void CreateBuilding(float distanceFromLastBackground){
         Vector2 position = new Vector2(lastBackGround.transform.position.x + (buildingPrefabs[0].GetComponent<SpriteRenderer>().size.x * buildingPrefabs[0].transform.lossyScale.x), backgroundGenerationPosition.y);
         CreateBuilding(position);
@@ -939,7 +955,7 @@ public class GameManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 継続的な背景の建物の生成
+    /// 継続的な建物の生成
     /// </summary>
     private IEnumerator CreateBuildingContinuously(){
         while(!isGameOver){
@@ -954,23 +970,23 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 敵の生成
     /// </summary>
-    /// <param name="enemyPrefab">敵のprefab</param>
+    /// <param name="enemyPrefab">敵のプレハブ</param>
     private void SpawnEnemy(GameObject enemyPrefab){
         GameObject enemy = Instantiate(enemyPrefab, enemySpawnPosition, Quaternion.identity);
     }
     /// <summary>
     /// 敵の生成
     /// </summary>
-    /// <param name="enemyPrefab">敵のprefab</param>
-    /// <param name="spawnHeight">高さ</param>
+    /// <param name="enemyPrefab">敵のプレハブ</param>
+    /// <param name="spawnHeight">生成する高さ</param>
     private void SpawnEnemy(GameObject enemyPrefab, float spawnHeight){
         GameObject enemy = Instantiate(enemyPrefab, new Vector2(enemySpawnPosition.x, spawnHeight), Quaternion.identity);
     }
     /// <summary>
     /// 敵の生成
     /// </summary>
-    /// <param name="enemyPrefab">敵のprefab</param>
-    /// <param name="position">位置</param>
+    /// <param name="enemyPrefab">敵のプレハブ</param>
+    /// <param name="position">生成位置</param>
     private void SpawnEnemy(GameObject enemyPrefab, Vector2 position){
         GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
     }
@@ -978,6 +994,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 継続的な敵の生成
     /// </summary>
+    /// <returns></returns>
     private IEnumerator SpawnEnemyContinuously(){
         while(!isGameOver){
             float waitTime = UnityEngine.Random.Range(minimumEnemySpawnInterval, maximumEnemySpawnInterval);
@@ -985,7 +1002,7 @@ public class GameManager : MonoBehaviour{
 
             RaycastHit2D hit;
             bool isDetectedHall = false;
-            while(!(hit = Physics2D.Raycast(new Vector2(streetLampGenerationPosition.x, 6), Vector2.down, 12, 1 << 8))){
+            while(!(hit = Physics2D.Raycast(new Vector2(enemySpawnPosition.x, 6), Vector2.down, 12, 1 << 8))){
                 isDetectedHall = true;
                 yield return null;
             }
@@ -995,7 +1012,7 @@ public class GameManager : MonoBehaviour{
                 SpawnEnemy(enemyPrefabs[enemyId], hit.transform.position.y + hit.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2.0f + (enemyPrefabs[enemyId].transform.GetComponent<BoxCollider2D>().size.y * enemyPrefabs[enemyId].transform.lossyScale.y) / 2.0f + UnityEngine.Random.Range(0.5f, 1.5f));
             }
             else{
-                SpawnEnemy(enemyPrefabs[enemyId], new Vector2(hit.transform.position.x - hit.transform.GetComponent<BoxCollider2D>().bounds.size.x / 2 * 0f, hit.transform.position.y + hit.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2.0f + (enemyPrefabs[enemyId].transform.GetComponent<BoxCollider2D>().size.y * enemyPrefabs[enemyId].transform.lossyScale.y) / 2.0f + UnityEngine.Random.Range(0.5f, 1.5f)));
+                SpawnEnemy(enemyPrefabs[enemyId], new Vector2(hit.transform.position.x + hit.transform.GetComponent<BoxCollider2D>().bounds.size.x / UnityEngine.Random.Range(3.8f, 4.5f), hit.transform.position.y + hit.transform.GetComponent<BoxCollider2D>().bounds.size.y / 2.0f + (enemyPrefabs[enemyId].transform.GetComponent<BoxCollider2D>().size.y * enemyPrefabs[enemyId].transform.lossyScale.y) / 2.0f + UnityEngine.Random.Range(0.5f, 1.5f)));
             }
         }
     }
@@ -1003,7 +1020,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 街灯の生成
     /// </summary>
-    /// <param name="spawnHeight">高さ</param>
+    /// <param name="spawnHeight">生成する高さ</param>
     private void SpawnStreetLamp(float spawnHeight){
         GameObject enemy = Instantiate(streetLampPrefab, new Vector2(streetLampGenerationPosition.x, spawnHeight), Quaternion.identity);
     }
@@ -1042,6 +1059,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// コインの取得
     /// </summary>
+    /// <param name="type">コインの種類</param>
     public void GetCoin(CoinBehaviour.Type type){
         int valueBonusScale = 0;
         switch(type){
@@ -1072,6 +1090,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// ダメージの付与
     /// </summary>
+    /// <param name="value">ダメージ量</param>
     public void DealDamage(int value){
         dealtDamage += value;
         if(maximumDealtDamageLimit < dealtDamage){
@@ -1120,6 +1139,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// ポーズ状態の切り替え
     /// </summary>
+    /// <param name="value">ポーズ状態にするか</param>
     public void SwitchPause(bool value){
         isPaused = value;
 
@@ -1138,6 +1158,8 @@ public class GameManager : MonoBehaviour{
         SwitchPause(true);
         isGameOver = true;
 
+        SaveDataManager.Save();
+
         GoToMenu();
     }
 
@@ -1155,14 +1177,20 @@ public class GameManager : MonoBehaviour{
         UIManager.instance.ToggleOverlay(true);
         UIManager.instance.ShowGameOverScreen();
         UIManager.instance.UpdateScoreTexts(new Score(traveledDistance, earnedCurrency, dealtDamage, defeatedEnemyCount));
+
+        SaveDataManager.Save();
     }
 
     /// <summary>
     /// ゲームのリトライ
     /// </summary>
     public async void Retry(){
-        UIManager.instance.TogglePauseMenuWindow(false);
+        if(UIManager.instance.isFadeIn){
+            return;
+        }
 
+        UIManager.instance.isFadeIn = true;
+        UIManager.instance.TogglePauseMenuWindow(false);
         UIManager.instance.ToggleOverlay(true);
         overlayAnimator.SetTrigger("FadeIn");
 
@@ -1170,15 +1198,23 @@ public class GameManager : MonoBehaviour{
         SaveScore();
 
         await Task.Delay(3000);
-        
+
+        UIManager.instance.isFadeIn = false;
+
         SceneManager.LoadScene("GameScene");
     }
 
     /// <summary>
-    /// メニューへ切り替え
+    /// メニューへの切り替え
     /// </summary>
     public async void GoToMenu(){
+        if (UIManager.instance.isFadeIn) {
+            return;
+        }
+        UIManager.instance.isFadeIn = true;
+
         UIManager.instance.TogglePauseMenuWindow(false);
+
 
         UIManager.instance.ToggleOverlay(true);
         overlayAnimator.SetTrigger("FadeIn");
@@ -1187,7 +1223,9 @@ public class GameManager : MonoBehaviour{
         SaveScore();
 
         await Task.Delay(3000);
-        
+
+        UIManager.instance.isFadeIn = false;
+
         SceneManager.LoadScene("MenuScene");
     }
 
@@ -1219,6 +1257,7 @@ public class GameManager : MonoBehaviour{
     /// <summary>
     /// 音声の再生
     /// </summary>
+    /// <param name="audioClip">再生するクリップ</param>
     public void PlayAudio(AudioClip audioClip){
         if(audioClip != null){
             audioSources[1].PlayOneShot(audioClip);

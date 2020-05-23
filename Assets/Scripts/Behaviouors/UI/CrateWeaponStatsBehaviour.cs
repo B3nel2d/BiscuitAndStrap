@@ -39,7 +39,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// スタッツ背景画像
+    /// 背景の画像
     /// </summary>
     [field: SerializeField, RenameField("Stats Background Image")]
     private Image statsBackgroundImage{
@@ -75,7 +75,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// ダメージのテキスト
+    /// 与ダメージのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Damage Text")]
     private TextMeshProUGUI damageText{
@@ -84,7 +84,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// ファイアレートのテキスト
+    /// 発射レートのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Fire Rate Text")]
     private TextMeshProUGUI fireRateText{
@@ -102,7 +102,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// クリティカル率のテキスト
+    /// クリティカル発生確率のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Critical Chance Text")]
     private TextMeshProUGUI criticalChanceText{
@@ -111,7 +111,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// スタッツ背景のスプライト
+    /// 背景のスプライトリスト
     /// </summary>
     [field: SerializeField, RenameField("Stats Background Sprites")]
     private List<Sprite> statsBackgroundSprites{
@@ -129,27 +129,20 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /**************************************************
-        Unity Event Functions
-    **************************************************/
-
-    private void Awake(){
-        
-    }
-
-    /**************************************************
         User Defined Functions
     **************************************************/
 
     /// <summary>
-    /// 表示する武器の指定
+    /// 表示する武器の設定
     /// </summary>
+    /// <param name="weapons">武器リスト</param>
     public void SetWeapons(List<Weapon> weapons){
         this.weapons = weapons;
         weaponIndex = 0;
     }
 
     /// <summary>
-    /// 武器スタッツの表示
+    /// 武器ステータスの表示
     /// </summary>
     public void ShowWeaponStats(){
         Weapon weapon = weapons[weaponIndex];
@@ -160,9 +153,9 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
         scoreText.text = "Score: " + weapon.score;
 
         damageText.text = weapon.projectileDamage.ToString();
-        fireRateText.text = String.Format("{0:#.##}/s", (1.0f / weapon.shotDelay));
-        bulletSpeedText.text = String.Format("{0:#.##}/s", (weapon.projectileSpeed * 30.0f));
-        criticalChanceText.text = String.Format("{0:##.##}%", (weapon.criticalChance) * 100.0f);
+        fireRateText.text = String.Format("{0:f2}/s", (1.0f / weapon.shotDelay));
+        bulletSpeedText.text = String.Format("{0:f2}/s", (weapon.projectileSpeed * 30.0f));
+        criticalChanceText.text = String.Format("{0:f2}%", (weapon.criticalChance) * 100.0f);
 
         weaponImage.GetComponent<ShinyEffectForUGUI>().Play(1.5f);
 
@@ -175,7 +168,7 @@ public class CrateWeaponStatsBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 次のスタッツの表示
+    /// 次の武器ステータスの表示
     /// </summary>
     public void GoNext(){
         weaponIndex++;

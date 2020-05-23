@@ -41,7 +41,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 武器数の上限
+    /// 武器の最大所持数
     /// </summary>
     [field: Header("Inventories")]
     [field: SerializeField, RenameField("Weapon Count Limit")]
@@ -59,7 +59,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// スキン数の上限
+    /// スキンの最大所持数
     /// </summary>
     [field: SerializeField, RenameField("Outfit Count Limit")]
     public int outfitCountLimit{
@@ -68,7 +68,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 選択したアイテム
+    /// 選択中のアイテム
     /// </summary>
     public Item selectedItem{
         get;
@@ -79,7 +79,7 @@ public class InventoryManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 武器のアニメーター
+    /// 武器画像のアニメーター
     /// </summary>
     [field: Header("Animation")]
     [field: SerializeField, RenameField("Weapon Image Animator")]
@@ -92,7 +92,7 @@ public class InventoryManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 武器スタッツの背景
+    /// ステータス背景の画像
     /// </summary>
     [field: Header("References")]
     [field: SerializeField, RenameField("Stats Background Image")]
@@ -102,7 +102,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 装備済みサイン
+    /// 装備済みであるかの表示
     /// </summary>
     [field: SerializeField, RenameField("Equipped Sign")]
     private GameObject equippedSign{
@@ -111,7 +111,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 武器ランクのテキスト
+    /// 武器のランクのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Rank Text")]
     private TextMeshProUGUI rankText{
@@ -120,7 +120,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// スコアのテキスト
+    /// 武器のスコアのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Score Text")]
     private TextMeshProUGUI scoreText{
@@ -129,7 +129,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ダメージのテキスト
+    /// 武器の与ダメージのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Damage Text")]
     private TextMeshProUGUI damageText{
@@ -138,7 +138,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// ファイアレートのテキスト
+    /// 武器の発射レートのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Fire Rate Text")]
     private TextMeshProUGUI fireRateText{
@@ -147,7 +147,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 弾速のテキスト
+    /// 武器の弾速のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Bullet Speed Text")]
     private TextMeshProUGUI bulletSpeedText{
@@ -156,7 +156,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// クリティカル率のテキスト
+    /// 武器のクリティカル発生確率のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Critical Chance Text")]
     private TextMeshProUGUI criticalChanceText{
@@ -165,7 +165,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 武器スタッツ背景のスプライトリスト
+    /// 武器のステータス背景の画像
     /// </summary>
     [field: SerializeField, RenameField("Stats Background Sprites")]
     private List<Sprite> statsBackgroundSprites{
@@ -174,7 +174,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// インベントリのインデックスのテキスト
+    /// インベントリの添え字のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Index Number Text")]
     private TextMeshProUGUI indexNumberText{
@@ -247,6 +247,7 @@ public class InventoryManager : MonoBehaviour{
     /// <summary>
     /// アイテムの追加
     /// </summary>
+    /// <param name="weapon">追加する武器</param>
     public void AddItem(Weapon weapon){
         weapons.Add(weapon);
         SaveDataManager.SetList("Inventory Weapons", weapons);
@@ -254,13 +255,14 @@ public class InventoryManager : MonoBehaviour{
     /// <summary>
     /// アイテムの追加
     /// </summary>
+    /// <param name="outfit">追加するスキン</param>
     public void AddItem(Outfit outfit){
         outfits.Add(outfit);
         SaveDataManager.SetList("Inventory Outfits", outfits);
     }
 
     /// <summary>
-    /// 武器スタッツの表示
+    /// 武器ステータスの表示
     /// </summary>
     public void ShowWeaponStats(){
         statsBackgroundImage.sprite = statsBackgroundSprites[((int)((Weapon)selectedItem).rank)];
@@ -269,9 +271,9 @@ public class InventoryManager : MonoBehaviour{
         scoreText.text = "Score: " + ((Weapon)selectedItem).score;
 
         damageText.text = ((Weapon)selectedItem).projectileDamage.ToString();
-        fireRateText.text = String.Format("{0:#.##}/s", (1.0f / ((Weapon)selectedItem).shotDelay));
-        bulletSpeedText.text = String.Format("{0:#.##}/s", (((Weapon)selectedItem).projectileSpeed * 30.0f));
-        criticalChanceText.text = String.Format("{0:##.##}%", (((Weapon)selectedItem).criticalChance) * 100.0f);
+        fireRateText.text = String.Format("{0:f2}/s", (1.0f / ((Weapon)selectedItem).shotDelay));
+        bulletSpeedText.text = String.Format("{0:f2}/s", (((Weapon)selectedItem).projectileSpeed * 30.0f));
+        criticalChanceText.text = String.Format("{0:f2}%", (((Weapon)selectedItem).criticalChance) * 100.0f);
         
         if(weaponCountLimit < weapons.Count){
             indexNumberText.text = (weapons.IndexOf((Weapon)selectedItem) + 1) + "/<color=red>" + weapons.Count + "</color>";
@@ -282,7 +284,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// リスト内の次のアイテムの表示
+    /// リスト内の次の武器ステータスの表示
     /// </summary>
     public void ShowNextWeaponStats(){
         int weaponNumber = 0;
@@ -304,7 +306,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// リスト内の前のアイテムの表示
+    /// リスト内の前の武器ステータスの表示
     /// </summary>
     public void ShowPreviousWeaponStats(){
         int weaponNumber = 0;
@@ -323,6 +325,46 @@ public class InventoryManager : MonoBehaviour{
         SetButtonStates();
 
         weaponImageAnimator.SetTrigger("RightSlide");
+    }
+
+    /// <summary>
+    /// 武器のソート(スコア降順)
+    /// </summary>
+    public void SortWeaponsByScore() {
+        weapons.Sort((a, b) => b.score - a.score);
+        ShowWeaponStats();
+    }
+
+    /// <summary>
+    /// 武器のソート(与ダメージ降順)
+    /// </summary>
+    public void SortWeaponsByDamage() {
+        weapons.Sort((a, b) => b.projectileDamage - a.projectileDamage);
+        ShowWeaponStats();
+    }
+
+    /// <summary>
+    /// 武器のソート(発射レート降順)
+    /// </summary>
+    public void SortWeaponsByFireRate() {
+        weapons.Sort((a, b) =>Math.Sign(a.shotDelay - b.shotDelay));
+        ShowWeaponStats();
+    }
+
+    /// <summary>
+    /// 武器のソート(弾速降順)
+    /// </summary>
+    public void SortWeaponsByBulletSpeed() {
+        weapons.Sort((a, b) => Math.Sign(b.projectileSpeed - a.projectileSpeed));
+        ShowWeaponStats();
+    }
+
+    /// <summary>
+    /// 武器のソート(クリティカル発生確率降順)
+    /// </summary>
+    public void SortWeaponsByCriticalChance() {
+        weapons.Sort((a, b) => Math.Sign(b.criticalChance - a.criticalChance));
+        ShowWeaponStats();
     }
 
     /// <summary>
@@ -348,7 +390,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// アイテムの装備
+    /// 選択中のアイテムの装備
     /// </summary>
     public void EquipItem(){
         if(selectedItem == null){
@@ -365,12 +407,13 @@ public class InventoryManager : MonoBehaviour{
         equippedSign.SetActive(true);
 
         SaveDataManager.SetClass("Player Profile", GameManager.playerProfile);
+        SaveDataManager.Save();
 
         SetButtonStates();
     }
 
     /// <summary>
-    /// アイテムの売却
+    /// 選択中のアイテムの売却
     /// </summary>
     public void SellItem(){
         if(selectedItem == null){
@@ -379,6 +422,13 @@ public class InventoryManager : MonoBehaviour{
         if(selectedItem == GameManager.playerProfile.weapon){
             return;
         }
+
+        GameManager.playerProfile.currecy += ((Weapon)selectedItem).score * 10;
+        if(PlayerProfile.maximumCurrencyLimit < GameManager.playerProfile.currecy){
+            GameManager.playerProfile.currecy = PlayerProfile.maximumCurrencyLimit;
+        }
+
+        MenuManager.instance.UpdateProfile();
 
         RemoveItem();
 
@@ -395,11 +445,14 @@ public class InventoryManager : MonoBehaviour{
         selectedItem = weapons[weaponNumber];
         ShowWeaponStats();
 
+        SaveDataManager.SetClass("Player Profile", GameManager.playerProfile);
+        SaveDataManager.Save();
+
         SetButtonStates();
     }
 
     /// <summary>
-    /// アイテムの削除
+    /// 選択中のアイテムの削除
     /// </summary>
     public void RemoveItem(){
         if(weapons.Contains((Weapon)selectedItem)){
@@ -413,7 +466,7 @@ public class InventoryManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 装備した武器をプロフィールに設定する
+    /// 装備した武器のプレイヤー情報への反映
     /// </summary>
     public void SetEquippedWeapon(){
         if(weapons.Find(weapon => weapon == GameManager.playerProfile.weapon) == null){

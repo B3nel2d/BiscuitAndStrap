@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinBehaviour : DropItemBehaviour{
@@ -16,6 +14,9 @@ public class CoinBehaviour : DropItemBehaviour{
         Enumerations
     **************************************************/
 
+    /// <summary>
+    /// コインの種類
+    /// </summary>
     public enum Type{
         Bronze,
         Silver,
@@ -26,17 +27,26 @@ public class CoinBehaviour : DropItemBehaviour{
         Fields / Properties
     **************************************************/
     
+    /// <summary>
+    /// 種類
+    /// </summary>
     private Type type{
         get;
         set;
     }
 
+    /// <summary>
+    /// 回転速度
+    /// </summary>
     [field: SerializeField, RenameField("Roll Speed")]
     private float rollSpeed{
         get;
         set;
     }
 
+    /// <summary>
+    /// ドロップ時の効果音
+    /// </summary>
     [field: SerializeField, RenameField("Coin Drop Sound")]
     public AudioClip coinDropSound{
         get;
@@ -52,10 +62,21 @@ public class CoinBehaviour : DropItemBehaviour{
         base.FixedUpdate();
     }
 
+    override public void OnTriggerEnter2D(Collider2D collision){
+        base.OnTriggerEnter2D(collision);
+
+        if(collision.gameObject.tag == "Platform"){
+            GameManager.instance.PlayAudio(coinDropSound);
+        }
+    }
+
     /**************************************************
         User Defined Functions
     **************************************************/
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
     protected override void Initialize(){
         base.Initialize();
 
@@ -73,14 +94,10 @@ public class CoinBehaviour : DropItemBehaviour{
             transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.yellow;
         }
     }
-    override public void OnTriggerEnter2D(Collider2D collision){
-        base.OnTriggerEnter2D(collision);
 
-        if(collision.gameObject.tag == "Platform"){
-            GameManager.instance.PlayAudio(coinDropSound);
-        }
-    }
-
+    /// <summary>
+    /// 回転
+    /// </summary>
     private void Roll(){
         if(!isLanding){
             transform.GetChild(0).Rotate(0f, 0f, rollSpeed);
@@ -90,6 +107,10 @@ public class CoinBehaviour : DropItemBehaviour{
         }
     }
 
+    /// <summary>
+    /// 効果の付与
+    /// </summary>
+    /// <param name="target">付与対象</param>
     protected override void GiveEffect(PlayerBehaviour target){
         target.GetCoin(type);
         base.GiveEffect(target);

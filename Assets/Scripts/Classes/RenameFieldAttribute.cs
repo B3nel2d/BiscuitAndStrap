@@ -11,15 +11,25 @@ using UnityEngine;
 
 class RenameFieldAttribute : PropertyAttribute{
 
+    /// <summary>
+    /// フィールド名
+    /// </summary>
     public string fieldName{
         get;
         private set;
     }
 
+    /// <summary>
+    /// フィールドアトリビュートの名前変更
+    /// </summary>
+    /// <param name="name">変更後の名前</param>
     public RenameFieldAttribute(string name){
         fieldName = name;
     }
 
+    /// <summary>
+    /// エディターGUI上での処理
+    /// </summary>
     #if UNITY_EDITOR
         [CustomPropertyDrawer(typeof(RenameFieldAttribute))]
         class FieldNameDrawer : PropertyDrawer{

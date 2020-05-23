@@ -6,7 +6,6 @@
 //
 //================================================================================
 
-using System;
 using UnityEngine;
 using TMPro;
 
@@ -19,32 +18,22 @@ public class MessageWindowBehaviour : MonoBehaviour{
     //  References
     //==============================
 
+    /// <summary>
+    /// タイトルのテキスト
+    /// </summary>
     [field: SerializeField, RenameField("Title Text")]
     public TextMeshProUGUI titleText{
         get;
         set;
     }
 
+    /// <summary>
+    /// メッセージのテキスト
+    /// </summary>
     [field: SerializeField, RenameField("Message Text")]
     public TextMeshProUGUI messageText{
         get;
         set;
-    }
-
-    /**************************************************
-        Unity Event Functions
-    **************************************************/
-
-    private void Awake(){
-        Initialize();
-    }
-
-    /**************************************************
-        User Defined Functions
-    **************************************************/
-
-    private void Initialize(){
-
     }
 
 }

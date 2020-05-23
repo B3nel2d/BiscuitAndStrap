@@ -104,7 +104,7 @@ public class UIManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 総移動距離のテキスト
+    /// 移動距離のスコアテキスト
     /// </summary>
     [field: SerializeField, RenameField("Traveled Distance Text")]
     private TextMeshProUGUI traveledDistanceText{
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 総獲得金額のテキスト
+    /// 獲得金額のスコアテキスト
     /// </summary>
     [field: SerializeField, RenameField("Earned Currency Text")]
     private TextMeshProUGUI earnedCurrencyText{
@@ -122,7 +122,7 @@ public class UIManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 総与ダメージのテキスト
+    /// 与えたダメージのスコアテキスト
     /// </summary>
     [field: SerializeField, RenameField("Dealt Damage Text")]
     private TextMeshProUGUI dealtDamageText{
@@ -131,13 +131,21 @@ public class UIManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 敵の総撃破数のテキスト
+    /// 敵撃破数のスコアテキスト
     /// </summary>
     [field: SerializeField, RenameField("Defeated Enemy Text")]
     private TextMeshProUGUI defeatedEnemyText{
         get;
         set;
     }
+
+    /// <summary>
+    /// フェイド中であるか
+    /// </summary>
+    public bool isFadeIn{
+        get;
+        set;
+    } = false;
 
     /**************************************************
         Unity Event Functions
@@ -169,6 +177,7 @@ public class UIManager : MonoBehaviour{
     /// <summary>
     /// 体力テキストの更新
     /// </summary>
+    /// <param name="amount"></param>
     public void UpdateHealthText(int amount){
         healthText.text = amount.ToString();
     }
@@ -176,13 +185,15 @@ public class UIManager : MonoBehaviour{
     /// <summary>
     /// 獲得金額テキストの更新
     /// </summary>
+    /// <param name="amount"></param>
     public void UpdateCurrecyText(int amount){
         currencyText.text = String.Format("${0:#,0}", amount);
     }
 
     /// <summary>
-    /// 各スコアテキストの更新
+    /// スコアテキストの更新
     /// </summary>
+    /// <param name="score"></param>
     public void UpdateScoreTexts(Score score){
         traveledDistanceText.text = String.Format("{0:f2}m", score.traveledDistance);
         if(GameManager.playerProfile.highScore.traveledDistance < score.traveledDistance){
@@ -235,6 +246,7 @@ public class UIManager : MonoBehaviour{
     /// <summary>
     /// オーバーレイの表示切替
     /// </summary>
+    /// <param name="active">表示するか</param>
     public void ToggleOverlay(bool active){
         overlay.SetActive(active);
     }
@@ -242,6 +254,7 @@ public class UIManager : MonoBehaviour{
     /// <summary>
     /// ポーズメニューウィンドウの表示切替
     /// </summary>
+    /// <param name="active">表示するか</param>
     public void TogglePauseMenuWindow(bool active){
         GameManager.instance.SwitchPause(active);
 

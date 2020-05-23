@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterBehavior : RigidbodyBehaviour{
@@ -61,6 +59,8 @@ public class CharacterBehavior : RigidbodyBehaviour{
     /// <summary>
     /// 受けたダメージの計算
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
+    /// <param name="direction">ダメージを受けた方向</param>
     virtual public void TakeDamage(int damage, Vector3 direction){
         currentHealth -= damage;
 
@@ -72,6 +72,7 @@ public class CharacterBehavior : RigidbodyBehaviour{
     /// <summary>
     /// 受けたダメージの計算
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
     virtual public void TakeDamage(int damage){
         TakeDamage(damage, Vector3.zero);
     }

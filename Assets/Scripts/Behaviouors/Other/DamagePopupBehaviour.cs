@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -27,7 +25,7 @@ public class DamagePopupBehaviour : PopupBehaviour{
     }
 
     /// <summary>
-    /// ダメージ値
+    /// ダメージ量
     /// </summary>
     public int damage{
         get;
@@ -64,6 +62,8 @@ public class DamagePopupBehaviour : PopupBehaviour{
     /// <summary>
     /// 初期化処理
     /// </summary>
+    /// <param name="damage">ダメージ量</param>
+    /// <param name="critical">クリティカルであるか</param>
     public void Initialize(float damage, bool critical){
         textMesh.text = damage.ToString();
         timer = lifeTime;

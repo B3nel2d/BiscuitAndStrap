@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviour{
     //==============================
 
     /// <summary>
-    /// 現在表示対象の画面
+    /// 表示対象の画面
     /// </summary>
     private GameObject activeScreen{
         get;
@@ -143,10 +143,19 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// アイテム購入時の効果音
+    /// 武器箱購入時の効果音
     /// </summary>
     [field: SerializeField, RenameField("Purchase Sound")]
     private AudioClip purchaseSound{
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// ゲーム開始時の効果音
+    /// </summary>
+    [field: SerializeField, RenameField("Game Start Sound")]
+    private AudioClip gameStartSound{
         get;
         set;
     }
@@ -192,7 +201,7 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 総移動距離のテキスト
+    /// 移動距離のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Traveled Distance Text")]
     private TextMeshProUGUI traveledDistanceText{
@@ -201,7 +210,7 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 獲得総額のテキスト
+    /// 獲得金額のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Earned Currency Text")]
     private TextMeshProUGUI earnedCurrencyText{
@@ -210,7 +219,7 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 総与ダメージのテキスト
+    /// 与えたダメージのテキスト
     /// </summary>
     [field: SerializeField, RenameField("Dealt Damage Text")]
     private TextMeshProUGUI dealtDamageText{
@@ -219,7 +228,7 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 敵の総撃破数のテキスト
+    /// 敵撃破数のテキスト
     /// </summary>
     [field: SerializeField, RenameField("Defeated Enemy Text")]
     private TextMeshProUGUI defeatedEnemyText{
@@ -246,7 +255,25 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 箱から引いた武器のスタッツ
+    /// クレジットウィンドウ
+    /// </summary>
+    [field: SerializeField, RenameField("Credit Window")]
+    private GameObject creditWindow{
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// チュートリアルウィンドウ
+    /// </summary>
+    [field: SerializeField, RenameField("Tutorial Window")]
+    private GameObject tutorialWindow{
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// 取得武器のステータス
     /// </summary>
     [field: SerializeField, RenameField("Crate Weapon Stats")]
     private GameObject crateWeaponStats{
@@ -293,9 +320,14 @@ public class MenuManager : MonoBehaviour{
         if(GameManager.playerProfile == null){
             GameManager.playerProfile = SaveDataManager.GetClass("Player Profile", new PlayerProfile());
         }
-        if(GameManager.playerProfile.weapon == null && InventoryManager.weapons.Count == 0){
-            GameManager.playerProfile.weapon = new Weapon();
-            InventoryManager.instance.AddItem(GameManager.playerProfile.weapon);
+        if(GameManager.playerProfile.weapon == null){
+            if(InventoryManager.weapons.Count == 0){
+                GameManager.playerProfile.weapon = new Weapon();
+                InventoryManager.instance.AddItem(GameManager.playerProfile.weapon);
+            }
+            else{
+                GameManager.playerProfile.weapon = InventoryManager.weapons[0];
+            }
         }
 
         InventoryManager.instance.SetEquippedWeapon();
@@ -305,19 +337,21 @@ public class MenuManager : MonoBehaviour{
 
         ChangeScreen(menuScreen);
 
+        optionWindow.GetComponent<OptionWindowBehaviour>().Initialize();
+        tutorialWindow.GetComponent<TutorialWindowBehaviour>().Initialize();
+
         overlay.SetActive(true);
         overlayAnimator.SetTrigger("FadeOut");
 
         await Task.Delay(3000);
 
         overlay.SetActive(false);
-
-        optionWindow.GetComponent<OptionWindowBehaviour>().Initialize();
     }
 
     /// <summary>
-    /// 画面の遷移
+    /// 画面の切り替え
     /// </summary>
+    /// <param name="screen">表示する画面</param>
     public void ChangeScreen(GameObject screen){
         if(screen == null){
             return;
@@ -335,6 +369,7 @@ public class MenuManager : MonoBehaviour{
     /// <summary>
     /// 画面の更新
     /// </summary>
+    /// <param name="screen">更新する画面</param>
     private void UpdateScreen(GameObject screen){
         if(screen == loadoutScreen){
             InventoryManager.instance.UpdateLoadoutScreen();
@@ -344,7 +379,7 @@ public class MenuManager : MonoBehaviour{
     /// <summary>
     /// プレイヤー情報の更新
     /// </summary>
-    private void UpdateProfile(){
+    public void UpdateProfile(){
         playerNameText.text = GameManager.playerProfile.name;
         currencyText.text = String.Format("$ {0:#,0}", GameManager.playerProfile.currecy);
     }
@@ -360,16 +395,33 @@ public class MenuManager : MonoBehaviour{
     }
 
     /// <summary>
-    /// 一つ前の画面への遷移
+    /// 一つ前の画面への切り替え
     /// </summary>
     public void GoBack(){
         ChangeScreen(previousScreen);
     }
 
     /// <summary>
+    /// プレイボタンが押された際の処理
+    /// </summary>
+    public void OnPlayButtonPressed(){
+        if(0 < GameManager.playerProfile.highScore.traveledDistance){
+            Play();
+            return;
+        }
+
+        PlayAudio(buttonClickSound);
+
+        ToggleTutorialWindow(true);
+        tutorialWindow.GetComponent<TutorialWindowBehaviour>().playAfterTutorial = true;
+    }
+
+    /// <summary>
     /// ゲームの開始
     /// </summary>
     public async void Play(){
+        PlayAudio(gameStartSound);
+
         overlay.SetActive(true);
         overlayAnimator.SetTrigger("FadeIn");
 
@@ -414,6 +466,8 @@ public class MenuManager : MonoBehaviour{
         crateWeaponStats.GetComponent<CrateWeaponStatsBehaviour>().SetWeapons(weapons);
         crateWeaponStats.GetComponent<CrateWeaponStatsBehaviour>().ShowWeaponStats();
 
+        SaveDataManager.Save();
+
         PlayAudio(purchaseSound);
     }
 
@@ -455,12 +509,15 @@ public class MenuManager : MonoBehaviour{
         crateWeaponStats.GetComponent<CrateWeaponStatsBehaviour>().SetWeapons(weapons);
         crateWeaponStats.GetComponent<CrateWeaponStatsBehaviour>().ShowWeaponStats();
 
+        SaveDataManager.Save();
+
         PlayAudio(purchaseSound);
     }
 
     /// <summary>
     /// オプションウィンドウの表示切替
     /// </summary>
+    /// <param name="active">表示するか</param>
     public void ToggleOptionWindow(bool active){
         overlay.SetActive(active);
         optionWindow.SetActive(active);
@@ -469,14 +526,36 @@ public class MenuManager : MonoBehaviour{
     /// <summary>
     /// メッセージウィンドウの表示切替
     /// </summary>
+    /// <param name="active">表示するか</param>
     public void ToggleMessageWindow(bool active){
         overlay.SetActive(active);
         messageWindow.SetActive(active);
     }
 
     /// <summary>
-    /// 武器スタッツの表示切替
+    /// クレジットウィンドウの表示切替
     /// </summary>
+    /// <param name="active">表示するか</param>
+    public void ToggleCreditWindow(bool active){
+        creditWindow.SetActive(active);
+    }
+
+    /// <summary>
+    /// チュートリアルウィンドウの表示切替
+    /// </summary>
+    /// <param name="active">表示するか</param>
+    public void ToggleTutorialWindow(bool active){
+        if(active){
+            tutorialWindow.GetComponent<TutorialWindowBehaviour>().Initialize();
+        }
+
+        tutorialWindow.SetActive(active);
+    }
+
+    /// <summary>
+    /// 武器ステータスの表示切替
+    /// </summary>
+    /// <param name="active">表示するか</param>
     public void ToggleCrateWeaponStats(bool active){
         overlay.SetActive(active);
         crateWeaponStats.SetActive(active);
@@ -485,8 +564,16 @@ public class MenuManager : MonoBehaviour{
     /// <summary>
     /// 音声の再生
     /// </summary>
+    /// <param name="audioClip">再生するクリップ</param>
     public void PlayAudio(AudioClip audioClip){
         audioSources[1].PlayOneShot(audioClip);
+    }
+
+    /// <summary>
+    /// ゲームのシャットダウン
+    /// </summary>
+    public void QuitGame(){
+        UnityEngine.Application.Quit();
     }
 
 }

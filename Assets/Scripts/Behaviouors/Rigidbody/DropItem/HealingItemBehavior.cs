@@ -6,7 +6,6 @@
 //
 //================================================================================
 
-using System;
 using UnityEngine;
 
 class HealingItemBehavior : DropItemBehaviour{
@@ -15,6 +14,9 @@ class HealingItemBehavior : DropItemBehaviour{
         Fields / Properties
     **************************************************/
 
+    /// <summary>
+    /// 回復ポップアップエフェクトのプレハブ
+    /// </summary>
     [field: SerializeField, RenameField("Health Popup Prefab")]
     private GameObject healthPopupPrefab{
         get;
@@ -25,6 +27,10 @@ class HealingItemBehavior : DropItemBehaviour{
         User Defined Functions
     **************************************************/
 
+    /// <summary>
+    /// 効果の付与
+    /// </summary>
+    /// <param name="target">付与対象</param>
     protected override void GiveEffect(PlayerBehaviour target){
         target.GetHealed(1);
 

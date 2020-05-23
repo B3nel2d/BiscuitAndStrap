@@ -24,19 +24,19 @@ public class PlatformBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 足場の大きさのバッキングフィールド
+    /// 足場のサイズのバッキングフィールド
     /// </summary>
     private Vector2 size_field;
     /// <summary>
-    /// 足場の大きさ
+    /// 足場のサイズ
     /// </summary>
     public Vector2 size{
         get{
             return size_field;
         }
         set{
-            //関係する各コンポーネントの値を一度に変更
             size_field = value;
+
             transform.GetComponent<BoxCollider2D>().size = size_field;
             transform.GetChild(0).GetComponent<SpriteRenderer>().size = size_field;
             transform.GetChild(1).GetComponent<SpriteRenderer>().size = new Vector2(size_field.x, 1f);
@@ -58,16 +58,16 @@ public class PlatformBehaviour : MonoBehaviour{
     **************************************************/
 
     /// <summary>
-    /// ゲームスピードに沿った移動
+    /// ゲームスピードに従った移動
     /// </summary>
     private void Move(){
         transform.position= (Vector2)transform.position + gameVelocity * Time.fixedDeltaTime;
     }
 
     /// <summary>
-    /// 画面外に出た際の処理
+    /// 画面(ゲームエリア)外に出た際の処理
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision">離れたコリジョン</param>
     public void OnTriggerExit2D(Collider2D collision){
         if(collision.gameObject.tag == "Game Area"){
             Destroy(transform.gameObject);

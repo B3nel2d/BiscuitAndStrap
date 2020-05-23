@@ -6,10 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 [System.Serializable]
 public class PlayerProfile{
 
@@ -18,7 +14,7 @@ public class PlayerProfile{
     **************************************************/
 
     /// <summary>
-    /// プレイヤー名
+    /// 名前
     /// </summary>
     public string name;
 
@@ -26,12 +22,14 @@ public class PlayerProfile{
     /// 所持金
     /// </summary>
     public int currecy;
+
     /// <summary>
-    /// 最大所持金
+    /// 所持金のカウント最大値
     /// </summary>
     public const int maximumCurrencyLimit = 99999999;
+
     /// <summary>
-    /// 初期所持金
+    /// ゲーム開始時の所持金
     /// </summary>
     private const int initialCurrency = 3000;
 
@@ -50,7 +48,7 @@ public class PlayerProfile{
     **************************************************/
 
     /// <summary>
-    /// コンストラクター
+    /// コンストラクタ
     /// </summary>
     public PlayerProfile(){
         name = "Player";

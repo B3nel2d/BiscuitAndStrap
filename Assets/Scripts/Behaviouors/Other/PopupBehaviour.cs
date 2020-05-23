@@ -6,8 +6,6 @@
 //
 //================================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PopupBehaviour : MonoBehaviour{
@@ -79,7 +77,7 @@ public class PopupBehaviour : MonoBehaviour{
     }
 
     /// <summary>
-    /// 破棄
+    /// 破棄処理
     /// </summary>
     private void Destroy(){
         if(timer <= 0){
