@@ -6,7 +6,6 @@
 【担当箇所】企画/プログラム/デザイン
 【製作期間】約2か月
 
--各プラットフォーム用のビルドはBuildsフォルダ内に配置してあります。
 -具体的には、以下のプログラムを担当しました。全ソースコードは Assets/Scripts から閲覧できます。
 --タイトル画面
 --メニュー画面
@@ -20,6 +19,12 @@
 --各エフェクトの作成と発生
 --ハイスコア機能
 --ゲーム中のUI
+
+-実際にプレイした様子を動画ファイルとして用意しました。demo.mp4をご確認ください。
+
+-本作はApp Store及びGoogle Play Storeにてリリースされています。
+--App Store: https://t.co/2vEKkActwD?ssr=true
+--Google Play Store: https://play.google.com/store/apps/details?id=com.BlackHoodie.BiscuitAndStrap
 
 
 詳細については、用意しましたポートフォリオサイトをご覧下さい。
